@@ -1,27 +1,38 @@
-;(function(window, undefined) {
+window.life.Ticker = function(
+	_controller,
+	_options
+) {
 
 	// private properties
 
-	var _ = {
-		controller : null,
-		interval   : null,
-		timer      : null,
-		tick       : null
-	};
+	var _ = inherit(
+		{
+			interval   : null,
+			tick       : null,
+			timer      : null
+		},
+		{
+			interval   : 1000,
+			tick       : 0
+		},
+		_options
+	);
+
+	// constructor
+
+	function init() {
+		_controller.event('ticker.inited');
+	}
 
 	// private methods
 
 	// public methods
 
-	function init() {
-		_.controller.event('ticker.inited');
-	}
-
 	function start() {
 		var self = this;
 		_.timer = setInterval(function() {
 			_.tick++;
-			_.controller.event(self, 'tick', {tick: _.tick});
+			_controller.event(self, 'tick', {tick: _.tick});
 		}, _.interval);
 	}
 
@@ -30,20 +41,11 @@
 		_.timer = null;
 	}
 
-	// constructor
+	// interface
 
-	var Ticker = function(controller, options) {
-		_.controller = controller;
-		_.interval   = options.interval;
-		_.tick       = 0;
-	};
-
-	extend(Ticker.prototype, {
+	return {
 		init  : init,
 		start : start,
 		stop  : stop
-	});
-
-	window.life.Ticker = Ticker;
-
-})(window);
+	};
+};

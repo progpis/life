@@ -1,18 +1,18 @@
 window.life.CreatureRenderer = function(
-	__controller,
-	__options
+	_controller,
+	_options
 ) {
 
 	// private properties
 
-	var _ = {
-		controller : null,
-		canvas     : null
-	};
+	var _ = inherit(
+		{
+			canvas : null
+		},
+		_options
+	);
 
 	// constructor
-
-	_.controller = __controller;
 
 	// private methods
 
@@ -61,7 +61,7 @@ window.life.CreatureRenderer = function(
 
 	function init(canvas) {
 		_.canvas = canvas;
-		_.controller.event(this, 'creature_renderer.inited');
+		_controller.event(this, 'creature_renderer.inited');
 	}
 
 	function render(creature) {

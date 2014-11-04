@@ -1,5 +1,3 @@
-;(function(window, undefined) {
-
 window.inherit = function() {
 	var target = {};
 	var s, i;
@@ -61,5 +59,3 @@ window.rand = function(min, max) {
 };
 
 window.life = {};
-
-})(window);
