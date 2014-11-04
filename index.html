@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Life</title>
+	<style>
+	#canvas {
+		background-color: #ccc;
+		border: solid 1px #666;
+	}
+	</style>
+</head>
+<body>
+
+<canvas id="canvas" width="600" height="600"></canvas>
+
+<script src="life.js"></script>
+<script src="life.struct.js"></script>
+<script src="life.controller.js"></script>
+
+<script src="life.ticker.js"></script>
+<script src="life.board.js"></script>
+<script src="life.cell.js"></script>
+<script src="life.animalia.js"></script>
+<script src="life.breed.js"></script>
+<script src="life.creature.js"></script>
+<script src="life.creature.ai.js"></script>
+<script src="life.creature_defaults.js"></script>
+
+<script src="life.canvas.js"></script>
+<script src="life.renderer.js"></script>
+<script src="life.cell.renderer.js"></script>
+<script src="life.creature.renderer.js"></script>
+
+<script>
+window.onload = function(){
+
+	var breed1 = {
+		color: '#f0f',
+		pop: 10,
+		dna: {
+			energy: {
+				default: 10,
+				max: 10,
+				consumption: 1
+			},
+			sight: {
+				range: 1
+			},
+			food: {
+				seek_threshold : 30
+			}
+		},
+		ai_class: 'CreatureAi'
+	};
+	var breed2 = {
+		color: '#ff0',
+		pop: 10,
+		dna: {
+			energy: {
+				default: 10,
+				max: 10,
+				consumption: 1
+			},
+			sight: {
+				range: 1
+			},
+			food: {
+				seek_threshold : 30
+			}
+		},
+		ai_class: 'CreatureAi'
+	};
+
+	var controller = new life.Controller({
+
+		ticker: {
+			interval: 100
+		},
+
+		board: {
+			radius: 25
+		},
+		cell: {
+			food: {
+				max: 100,
+				default: 50,
+				rand: 20,
+				grow_ticks: 10,
+				delta: 1
+			}
+		},
+		cell_ai: {
+
+		},
+		renderer: {},
+		canvas: {
+			id: 'canvas'
+		},
+		cell_renderer: {
+			background: {
+				color: {
+					min: 0x33,
+					max: 0x66
+				}
+			},
+			show: {
+				food_number: false
+			}
+		},
+		animalia: {},
+		breeds: [
+			breed1, breed2
+		],
+		breed: {},
+		creature: {},
+		creature_renderer: {}
+	});
+
+	controller.init();
+	controller.start();
+
+//	var s1 = { s1: 1, i: 1, x: { y: { a: 1}} };
+//	var s2 = { s2: 2, i: 2, x: { y: { a: 2}} };
+//	var s3 = { s3: 3, i: 3, x: { y: { a: 3}} };
+//
+//	var t1 = inherit( s1 ) ;
+//	console.log('t1', t1, 's1', s1);
+//
+//	var t1 = inherit( s2, s1 ) ;
+//	console.log('t1', t1, 's1', s1, 's2', s2);
+//
+//	var t1 = inherit( s3, s2, s1 ) ;
+//	console.log('t1', t1, 's1', s1, 's2', s2, 's3', s3);
+
+
+};
+</script>
+</body>
+</html>
