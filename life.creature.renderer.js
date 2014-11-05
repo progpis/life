@@ -7,6 +7,7 @@ window.life.CreatureRenderer = function(
 
 	var _ = inherit(
 		{
+<<<<<<< HEAD
 		},
 		_options
 	);
@@ -20,6 +21,15 @@ window.life.CreatureRenderer = function(
 		_controller.event(this, 'creature_renderer.inited');
 	}
 
+=======
+			canvas : null
+		},
+		_options
+	);
+
+	// constructor
+
+>>>>>>> FETCH_HEAD
 	// private methods
 
 	function _drawCircular(creature, max, current, color, radius_delta) {
@@ -65,6 +75,14 @@ window.life.CreatureRenderer = function(
 
 	// public methods
 
+<<<<<<< HEAD
+=======
+	function init(canvas) {
+		_.canvas = canvas;
+		_controller.event(this, 'creature_renderer.inited');
+	}
+
+>>>>>>> FETCH_HEAD
 	function render(creature) {
 		_drawCircular.call(this,
 			creature,

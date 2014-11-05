@@ -7,19 +7,30 @@ window.life.Renderer = function(
 
 	var _ = inherit(
 		{
+<<<<<<< HEAD
+=======
+			canvas            : null,
+>>>>>>> FETCH_HEAD
 			board_radius      : null,
 			cell_renderer     : null,
 			creature_renderer : null
 		},
 		_options
 	);
+<<<<<<< HEAD
 	
 	var _canvas;
+=======
+>>>>>>> FETCH_HEAD
 
 	// constructor
 
 	function init(canvas, board_radius) {
+<<<<<<< HEAD
 		_canvas = canvas;
+=======
+		_.canvas = canvas;
+>>>>>>> FETCH_HEAD
 		_.board_radius = board_radius;
 		_initRenderers();
 		_controller.event('renderer.inited');
