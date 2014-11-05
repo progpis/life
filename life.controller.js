@@ -1,24 +1,47 @@
-window.life.Controller = function(
-	__options
-) {
+window.life.Controller = function(_options) {
 
 	// private properties
 
-	var _ = {
-		options : null,
-		comps   : {
+	var _ = inherit(
+		{
 			ticker            : null,
 			board             : null,
 			animalia          : null,
+			breed             : null,
+			breeds            : null,
+			creature          : null,
 			canvas            : null,
-			renderer          : null
-		}
-	};
+			renderer          : null,
+			cell_renderer     : null,
+			creature_renderer : null,
+			creature_ai       : null
+		},
+		_options
+	);
+
+	var _ticker;
+	var _board;
+	var _animalia;
+	var _canvas;
+	var _renderer;
 
 	// constructor
 
 	var self  = this;
-	_.options = __options;
+
+	function init() {
+		_ticker   = new life.Ticker   (this, _.ticker);
+		_board    = new life.Board    (this, _.board);
+		_animalia = new life.Animalia (this, _.animalia);
+		_canvas   = new life.Canvas   (this, _.canvas);
+		_renderer = new life.Renderer (this, _.renderer);
+
+		_ticker.init();
+		_board.init();
+		_animalia.init(_board.radius(), _.breeds);
+		_canvas.init(_board.radius());
+		_renderer.init(_canvas, _board.radius());
+	}
 
 	// private methods
 
@@ -27,9 +50,9 @@ window.life.Controller = function(
 		switch(type){
 
 			case 'tick' :
-				_.comps.board.tick(event.tick);
-				_.comps.animalia.tick(event.tick);
-				_.comps.renderer.render();
+				_board.tick(event.tick);
+				_animalia.tick(event.tick);
+				_renderer.render();
 				break;
 
 			default :
@@ -39,44 +62,29 @@ window.life.Controller = function(
 
 	// public methods
 
-	function init() {
-
-		_.comps.ticker            = new life.Ticker           (this, _.options.ticker);
-		_.comps.board             = new life.Board            (this, _.options.board);
-		_.comps.animalia          = new life.Animalia         (this, _.options.animalia);
-		_.comps.canvas            = new life.Canvas           (this, _.options.canvas);
-		_.comps.renderer          = new life.Renderer         (this, _.options.renderer);
-
-		_.comps.ticker.init();
-		_.comps.board.init();
-		_.comps.animalia.init(_.comps.board.radius(), _.options.breeds);
-		_.comps.canvas.init(_.comps.board.radius());
-		_.comps.renderer.init(_.comps.canvas, _.comps.board.radius());
-	}
-
 	function ticker() {
-		return _.comps.ticker;
+		return _ticker;
 	}
 
 	function board() {
-		return _.comps.board;
+		return _board;
 	}
 
 	function animalia() {
-		return _.comps.animalia;
+		return _animalia;
 	}
 
 	function canvas() {
-		return _.comps.canvas;
+		return _canvas;
 	}
 
 	function renderer() {
-		return _.comps.renderer;
+		return _renderer;
 	}
 
 	function start() {
-		_.comps.renderer.render();
-		_.comps.ticker.start();
+		_renderer.render();
+		_ticker.start();
 	}
 
 	function event(obj, type, event) {
@@ -84,28 +92,28 @@ window.life.Controller = function(
 	}
 
 	function newCell(x, y, gen) {
-		return new life.Cell(this, _.options.cell, x, y, gen);
+		return new life.Cell(this, _.cell, x, y, gen);
 	}
 
 	function newCreatureAi(ai_class) {
 		if ('function' !== typeof life[ai_class]) return false;
-		return new life[ai_class](this, _.options.cell_ai);
+		return new life[ai_class](this, _.creature_ai);
 	}
 
 	function newBreed(breed_conf, i) {
-		return new life.Breed(this, _.options.breed, breed_conf, i);
+		return new life.Breed(this, _.breed, breed_conf, i);
 	}
 
 	function newCreature(i) {
-		return new life.Creature(this, _.options.creature, i);
+		return new life.Creature(this, _.creature, i);
 	}
 
 	function newCellRenderer() {
-		return new life.CellRenderer(this, _.options.cell_renderer);
+		return new life.CellRenderer(this, _.cell_renderer);
 	}
 
 	function newCreatureRenderer() {
-		return new life.CreatureRenderer(this, _.options.creature_renderer);
+		return new life.CreatureRenderer(this, _.creature_renderer);
 	}
 
 	return {

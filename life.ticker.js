@@ -1,49 +1,49 @@
-;(function(window, undefined) {
-
+window.life.Ticker = function(
+	_controller,
+    _options
+) {
 	// private properties
+	
+	var _ = inherit(
+		{
+			interval   : null,
+			tick       : null
+		},
+		_options,
+		{
+			tick: 0
+		}
+	);
 
-	var _ = {
-		controller : null,
-		interval   : null,
-		timer      : null,
-		tick       : null
-	};
+	var _timer;
+
+	// constructor
+	
+	function init() {
+		_controller.event('ticker.inited');
+	}
 
 	// private methods
-
+	
 	// public methods
-
-	function init() {
-		_.controller.event('ticker.inited');
-	}
 
 	function start() {
 		var self = this;
-		_.timer = setInterval(function() {
+		_timer = setInterval(function() {
 			_.tick++;
-			_.controller.event(self, 'tick', {tick: _.tick});
+			_controller.event(self, 'tick', {tick: _.tick});
 		}, _.interval);
 	}
-
+	
 	function stop() {
-		clearInterval(_.timer);
-		_.timer = null;
+		clearInterval(_timer);
+		_timer = null;
 	}
-
-	// constructor
-
-	var Ticker = function(controller, options) {
-		_.controller = controller;
-		_.interval   = options.interval;
-		_.tick       = 0;
-	};
-
-	extend(Ticker.prototype, {
+	
+	return {
 		init  : init,
 		start : start,
 		stop  : stop
-	});
-
-	window.life.Ticker = Ticker;
-
-})(window);
+	};
+	
+};

@@ -14,7 +14,6 @@
 <canvas id="canvas" width="600" height="600"></canvas>
 
 <script src="life.js"></script>
-<script src="life.struct.js"></script>
 <script src="life.controller.js"></script>
 
 <script src="life.ticker.js"></script>
@@ -24,7 +23,6 @@
 <script src="life.breed.js"></script>
 <script src="life.creature.js"></script>
 <script src="life.creature.ai.js"></script>
-<script src="life.creature_defaults.js"></script>
 
 <script src="life.canvas.js"></script>
 <script src="life.renderer.js"></script>
@@ -34,103 +32,131 @@
 <script>
 window.onload = function(){
 
-	var breed1 = {
-		color: '#f0f',
-		pop: 10,
-		dna: {
-			energy: {
-				default: 10,
-				max: 10,
-				consumption: 1
-			},
-			sight: {
-				range: 1
-			},
-			food: {
-				seek_threshold : 30
-			}
-		},
-		ai_class: 'CreatureAi'
-	};
-	var breed2 = {
-		color: '#ff0',
-		pop: 10,
-		dna: {
-			energy: {
-				default: 10,
-				max: 10,
-				consumption: 1
-			},
-			sight: {
-				range: 1
-			},
-			food: {
-				seek_threshold : 30
-			}
-		},
-		ai_class: 'CreatureAi'
-	};
-
-	var controller = new life.Controller({
-
-		ticker: {
-			interval: 100
-		},
-
-		board: {
-			radius: 25
-		},
-		cell: {
-			food: {
-				max: 100,
-				default: 50,
-				rand: 20,
-				grow_ticks: 10,
-				delta: 1
-			}
-		},
-		cell_ai: {
-
-		},
-		renderer: {},
-		canvas: {
-			id: 'canvas'
-		},
-		cell_renderer: {
-			background: {
-				color: {
-					min: 0x33,
-					max: 0x66
+	var breeds = [
+		{
+			color: '#f0f',
+			pop: 10,
+			dna: {
+				energy: {
+					default: 10,
+					max: 10,
+					consumption: 1
+				},
+				sight: {
+					range: 1
+				},
+				food: {
+					seek_threshold : 30
 				}
 			},
-			show: {
-				food_number: false
+			ai_class: 'CreatureAi'
+		},
+		{
+			color: '#ff0',
+			pop: 10,
+			dna: {
+				energy: {
+					default: 10,
+					max: 10,
+					consumption: 1
+				},
+				sight: {
+					range: 1
+				},
+				food: {
+					seek_threshold : 30
+				}
+			},
+			ai_class: 'CreatureAi'
+		}
+	];
+
+	var ticker = { interval: 100 };
+	var board = { radius: 25 };
+	var cell = {
+		food: {
+			max: 100,
+			default: 50,
+			rand: 20,
+			grow_ticks: 10,
+			delta: 1
+		}
+	};
+	var cellAi = {};
+	var renderer = {};
+	var canvas = { id: 'canvas' };
+	var cellRenderer = {
+		background: {
+			color: {
+				min: 0x33,
+				max: 0x66
 			}
 		},
-		animalia: {},
-		breeds: [
-			breed1, breed2
-		],
-		breed: {},
-		creature: {},
-		creature_renderer: {}
+		show: {
+			food_number: false
+		}
+	};
+	var animalia = {};
+	var breed = {};
+	var creature = {};
+	var creatureRenderer= {};
+
+	var controller = new life.Controller({
+		ticker: ticker,
+		board: board,
+		cell: cell,
+		cell_ai: cellAi,
+		renderer: renderer,
+		canvas: canvas,
+		cell_renderer: cellRenderer,
+		animalia: animalia,
+		breeds: breeds,
+		breed: breed,
+		creature: creature,
+		creature_renderer: creatureRenderer
 	});
 
 	controller.init();
 	controller.start();
 
-//	var s1 = { s1: 1, i: 1, x: { y: { a: 1}} };
-//	var s2 = { s2: 2, i: 2, x: { y: { a: 2}} };
-//	var s3 = { s3: 3, i: 3, x: { y: { a: 3}} };
-//
-//	var t1 = inherit( s1 ) ;
-//	console.log('t1', t1, 's1', s1);
-//
-//	var t1 = inherit( s2, s1 ) ;
-//	console.log('t1', t1, 's1', s1, 's2', s2);
-//
-//	var t1 = inherit( s3, s2, s1 ) ;
-//	console.log('t1', t1, 's1', s1, 's2', s2, 's3', s3);
+
+//	console.log(inherit(
+//		{
+//			s: 1,
+//			o: {
+//				a: 1,
+//				b: 1,
+//				c: null,
+//				d: 'one',
+//				oo: {
+//					aa: 1,
+//					bb: 1,
+//					ff: function OneOne() {}
+//				}
+//			}
+//			,
+//			f: function One() { console.log('1'); }
+//		},
+//		{
+//			s: 2,
+//			o: {
+//				a: 2,
+//				d: 'two'
+//			}
+//		},
+//		{
+//			s: 3,
+//			o: {
+//				b: 3,
+//				oo: {
+//					bb: 3,
+//					ff: function ThreeThree() {}
+//				},
+//				e: null
+//			},
+//			f: function Three() { console.log('3'); }
+//		}
+//	));
 
 
 };

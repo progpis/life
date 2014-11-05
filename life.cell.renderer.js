@@ -1,39 +1,44 @@
 window.life.CellRenderer = function(
-	__controller,
-	__options
+	_controller,
+	_options
 ) {
 
 	// private properties
 
-	var _ = {
-		controller      : null,
-		background      : {
-			color       : {
-				min     : null,
-				max     : null
-			}
+	var _ = inherit(
+		{
+			background      : {
+				color       : {
+					min     : null,
+					max     : null
+				}
+			},
+			show            : {
+				food_number : true
+			},
+			board_radius    : null
 		},
-		show            : {
-			food_number : true
-		},
-		canvas          : null,
-		board_radius    : null
-	};
+		_options
+	);
+	
+	var _canvas = null;
 
 	// constructor
 
-	_.controller = __controller;
-	_.background = __options.background;
-	_.show       = __options.show;
+	function init(canvas, board_radius) {
+		_canvas = canvas;
+		_.board_radius = board_radius;
+		_controller.event(this, 'cell_renderer.inited');
+	}
 
 	// private methods
 
 	function _drawCell(cell) {
-		var props   = _.canvas.cell();
+		var props   = _canvas.cell();
 		var cell_xy = cell.xy();
 		var x       = props.offset_x + cell_xy.x * props.width - props.width/2;
 		var y       = props.offset_y + cell_xy.y * props.height - props.height/2;
-		var ctx     = _.canvas.context();
+		var ctx     = _canvas.context();
 		var bg_col  = _backgroundColor(cell);
 
 		ctx.fillStyle = bg_col;
@@ -43,11 +48,11 @@ window.life.CellRenderer = function(
 	}
 
 	function _drawText(cell, text) {
-		var props   = _.canvas.cell();
+		var props   = _canvas.cell();
 		var cell_xy = cell.xy();
 		var x       = props.offset_x + cell_xy.x * props.width;
 		var y       = props.offset_y + cell_xy.y * props.height;
-		var ctx     = _.canvas.context();
+		var ctx     = _canvas.context();
 
 		ctx.font = "10px Arial";
 		ctx.textAlign = "center";
@@ -65,12 +70,6 @@ window.life.CellRenderer = function(
 	}
 
 	// public methods
-
-	function init(canvas, board_radius) {
-		_.canvas = canvas;
-		_.board_radius = board_radius;
-		_.controller.event(this, 'cell_renderer.inited');
-	}
 
 	function render(cell) {
 		_drawCell.call(this, cell);

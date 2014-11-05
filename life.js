@@ -3,14 +3,22 @@
 window.inherit = function() {
 	var target = {};
 	var s, i;
-	for (s = 0; s<arguments.length; s++) {
+	for (s = 0; s < arguments.length; s++) {
 		for (i in arguments[s]) {
 			if (!arguments[s].hasOwnProperty(i)) continue;
-			if ('object' === typeof arguments[s][i]) {
-				target[i] = window.inherit(arguments[s][i]);
-			} else {
+			if (null === arguments[s][i] || undefined === arguments[s][i] || 'object' !== typeof arguments[s][i]) {
 				target[i] = arguments[s][i];
+				continue;
 			}
+			if (!target.hasOwnProperty(i)) {
+				target[i] = window.inherit(arguments[s][i]);
+				continue;
+			}
+			if ('object' !== typeof target[i]) {
+				target[i] = arguments[s][i];
+				continue;
+			}
+			target[i] = window.inherit(target[i], arguments[s][i]);
 		}
 	}
 	return target;

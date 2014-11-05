@@ -1,39 +1,58 @@
 window.life.Creature = function(
-	__controller,
-	__options,
-	__i
+	_controller,
+	_options,
+	_i
 ) {
 
 	// private properties
 
-	var _ = {
-		controller : null,
-		i          : null,
-		alive      : null,
-		breed      : null,
-		cell       : null,
-		ai         : null,
-		dna        : clone(life.struct.dna),
-		state      : clone(life.struct.state)
-	};
+	var _ = inherit(
+		{
+			i                      : null,
+			dna                    : {
+				energy             : {
+					default        : null,
+					max            : null,
+					consumption    : null
+				},
+				sight              : {
+					range          : null
+				},
+				food               : {
+					seek_threshold : null
+				}
+			},
+			state                  : {
+				alive              : null,
+				energy             : {
+					current        : null
+				}
+			}
+		},
+		_options,
+		{
+			i: _i
+		}
+	);
+	
+	var _breed;
+	var _cell;
+	var _ai;
 
 	// constructor
 
-	_.controller = __controller;
-	_.i          = __i;
-
 	function init(breed, cell, ai_class) {
-		_.breed                = breed;
-		_.cell                 = cell;
+		_breed                = breed;
+		_cell                 = cell;
 
-		_.dna                  = _.breed.copyDna();
+		_.dna                  = inherit(_.dna, _breed.copyDna());
 		_.state.alive          = true;
 		_.state.energy.current = _.dna.energy.default;
 
-		_.ai = _.controller.newCreatureAi(ai_class);
-		_.ai.init(this, _.state);
+		_ai = _controller.newCreatureAi(ai_class);
+		_ai.init(this, _.state);
 
-		_.controller.event('creature.inited');
+		_controller.event('creature.inited');
 	}
 
 	// private methods
@@ -46,12 +65,12 @@ window.life.Creature = function(
 	}
 
 	function _considerMoving() {
-		if (_.cell.currentFood() < 10) {
+		if (_cell.currentFood() < 10) {
 			var dx = rand(-1, 1);
 			var dy = rand(-1, 1);
-			var cell_xy = _.cell.xy();
-			if (_.controller.board().hasCell(cell_xy.x+dx, cell_xy.y+dy)) {
-				_.cell = _.controller.board().cell(cell_xy.x+dx, cell_xy.y+dy);
+			var cell_xy = _cell.xy();
+			if (_controller.board().hasCell(cell_xy.x+dx, cell_xy.y+dy)) {
+				_cell = _controller.board().cell(cell_xy.x+dx, cell_xy.y+dy);
 			}
 		}
 	}
@@ -65,15 +84,15 @@ window.life.Creature = function(
 			return;
 		}
 
-		_.ai.tick(tick);
+		_ai.tick(tick);
 	}
 
 	function breed() {
-		return _.breed;
+		return _breed;
 	}
 
 	function cell() {
-		return _.cell;
+		return _cell;
 	}
 
 	function energyMax() {
@@ -94,19 +113,19 @@ window.life.Creature = function(
 
 	function moveTo(cell) {
 		var xy = cell.xy();
-		if (_.controller.board().hasCell(xy.x, xy.y)) {
-			_.cell = _.controller.board().cell(xy.x, xy.y);
+		if (_controller.board().hasCell(xy.x, xy.y)) {
+			_cell = _controller.board().cell(xy.x, xy.y);
 		}
 	}
 
 	function die() {
 		_.state.alive = false;
-		_.breed.killCreature(_.i);
+		_breed.killCreature(_.i);
 		return !_.state.alive;
 	}
 
 	function eat() {
-		var food = _.cell.provideFood(2);
+		var food = _cell.provideFood(2);
 		incEnergy(food);
 		return food;
 	}

@@ -1,29 +1,35 @@
 window.life.CreatureRenderer = function(
-	__controller,
-	__options
+	_controller,
+	_options
 ) {
 
 	// private properties
 
-	var _ = {
-		controller : null,
-		canvas     : null
-	};
+	var _ = inherit(
+		{
+		},
+		_options
+	);
+
+	var _canvas;
 
 	// constructor
 
-	_.controller = __controller;
+	function init(canvas) {
+		_canvas = canvas;
+		_controller.event(this, 'creature_renderer.inited');
+	}
 
 	// private methods
 
 	function _drawCircular(creature, max, current, color, radius_delta) {
-		var props  = _.canvas.cell();
+		var props  = _canvas.cell();
 		var cell_xy = creature.cell().xy();
 		var x      = props.offset_x + cell_xy.x * props.width;
 		var y      = props.offset_y + cell_xy.y * props.height;
 		var r      = props.radius - (radius_delta || 0);
 		var r2     = creature.sightRange() * 3 * props.radius;
-		var ctx    = _.canvas.context();
+		var ctx    = _canvas.context();
 
 		ctx.beginPath();
 		ctx.arc(x, y, r2, 0, 2*Math.PI);
@@ -45,11 +51,11 @@ window.life.CreatureRenderer = function(
 	}
 
 	function _drawText(creature, text) {
-		var props  = _.canvas.cell();
+		var props  = _canvas.cell();
 		var cell_xy = creature.cell().xy();
 		var x      = props.offset_x + cell_xy.x * props.width;
 		var y      = props.offset_y + cell_xy.y * props.height;
-		var ctx    = _.canvas.context();
+		var ctx    = _canvas.context();
 
 		ctx.font = "10px Arial";
 		ctx.textAlign = "center";
@@ -58,11 +64,6 @@ window.life.CreatureRenderer = function(
 	}
 
 	// public methods
-
-	function init(canvas) {
-		_.canvas = canvas;
-		_.controller.event(this, 'creature_renderer.inited');
-	}
 
 	function render(creature) {
 		_drawCircular.call(this,

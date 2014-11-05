@@ -1,32 +1,47 @@
 window.life.Animalia = function(
-	__controller,
-	__options
+	_controller,
+	_options
 ) {
 
 	// private properties
 
-	var _ = {
-		controller   : null,
-		board_radius : null,
-		count        : null,
-		breeds       : null
-	};
+	var _ = inherit(
+		{
+			board_radius : null,
+			count        : null
+		},
+		_options
+	);
+	
+	var _breeds;
+
+	// controller
+
+	function init(board_radius, breeds_list) {
+		_.board_radius = board_radius;
+		_.count = foreach(breeds_list);
+
+		_createBreeds.call(this, breeds_list);
+		_initBreeds.call(this);
+
+		_controller.event('animalia.inited');
+	}
 
 	// private methods
 
 	function _createBreeds(breeds_list) {
 		var x, y;
 		var i = 1;
-		_.breeds = {};
+		_breeds = {};
 		foreach(breeds_list, function(breed_conf) {
-			_.breeds[i] = _.controller.newBreed(breed_conf, i);
+			_breeds[i] = _controller.newBreed(breed_conf, i);
 			i++;
 		});
 	}
 
 	function _initBreeds() {
 		var x, y, pos;
-		foreach(_.breeds, function(breed, i) {
+		foreach(_breeds, function(breed, i) {
 			pos = _breedStartingPosition(_.board_radius, _.count, i);
 			pos[0] = Math.floor(pos[0]);
 			pos[1] = Math.floor(pos[1]);
@@ -50,32 +65,15 @@ window.life.Animalia = function(
 
 	// public methods
 
-	function init(board_radius, breeds_list) {
-		_.board_radius = board_radius;
-		_.count = foreach(breeds_list);
-
-		_createBreeds.call(this, breeds_list);
-		_initBreeds.call(this);
-
-		_.controller.event('animalia.inited');
-	}
-
 	function breeds() {
-		return _.breeds;
+		return _breeds;
 	}
 
 	function tick(tick) {
-		foreach(_.breeds, function(breed) {
+		foreach(_breeds, function(breed) {
 			breed.tick(tick);
 		});
 	}
-
-	// controller
-
-	_.controller = __controller;
-	_.board_radius = null;
-	_.count        = null;
-	_.breeds       = null;
 
 	// interface
 

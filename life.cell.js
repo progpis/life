@@ -1,43 +1,49 @@
 window.life.Cell = function(
-	__controller,
-	__options,
-	__x,
-	__y,
-	__gen
+	_controller,
+	_options,
+	_x,
+	_y,
+	_gen
 ) {
 
 	// private properties
 
-	var _ = {
-		controller  : null,
-		inited      : null,
-		x           : null,
-		y           : null,
-		gen         : null,
-		i           : null,
-		food        : {
-			max        : null,
-			rand       : null,
-			grow_ticks : null,
-			delta      : null,
-			current    : null
+	var _ = inherit(
+		{
+			inited      : null,
+			x           : null,
+			y           : null,
+			gen         : null,
+			i           : null,
+			food        : {
+				max        : null,
+				default    : null,
+				rand       : null,
+				grow_ticks : null,
+				delta      : null,
+				current    : null
+			}
+		},
+		_options,
+		{
+			inited: false,
+			x: _x,
+			y: _y,
+			gen: _gen
 		}
-	};
+	);
 
 	// constructor
 
-	_.controller  = __controller;
-	_.inited      = false;
-	_.x           = __x;
-	_.y           = __y;
-	_.gen         = __gen;
-	_.food        = {
-		max        : __options.food.max,
-		default    : __options.food.default,
-		rand       : __options.food.rand,
-		grow_ticks : __options.food.grow_ticks,
-		delta      : __options.food.delta
-	};
+	function init(i) {
+		if (_.inited) return;
+		_.inited = true;
+
+		_.i = i;
+		_.food.current = parseInt(_initFood.call(this));
+
+		_controller.event(this, 'cell.inited');
+	}
 
 	// private methods
 
@@ -66,16 +72,6 @@ window.life.Cell = function(
 
 	// public methods
 
-	function init(i) {
-		if (_.inited) return;
-		_.inited = true;
-
-		_.i = i;
-		_.food.current = parseInt(_initFood.call(this));
-
-		_.controller.event(this, 'cell.initiated');
-	}
-
 	function provideFood(amount) {
 		amount = parseInt(amount);
 		if (_.food.current >= amount) {
@@ -92,7 +88,7 @@ window.life.Cell = function(
 
 	function neighbours(x, y, radius) {
 		var dx, dy, x1, y1;
-		var board = _.controller.board();
+		var board = _controller.board();
 		var cells = [];
 		radius = radius || 1;
 		for (dx = -radius; dx <= radius; dx++) {

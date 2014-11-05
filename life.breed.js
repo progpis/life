@@ -9,15 +9,25 @@ window.life.Breed = function(
 
 	var _ = inherit(
 		{
-			controller          : null,
-			i                   : null,
-			color               : null,
-			pop                 : null,
-			start_x             : null,
-			start_y             : null,
-			creatures           : null,
-			dna                 : inherit(life.struct.dna),
-			ai_class            : null
+			i                      : null,
+			color                  : null,
+			pop                    : null,
+			start_x                : null,
+			start_y                : null,
+			dna: {
+				energy             : {
+					default        : null,
+					max            : null,
+					consumption    : null
+				},
+				sight              : {
+					range          : null
+				},
+				food: {
+					seek_threshold : null
+				}
+			},
+			ai_class               : null
 		}, {
 			dna: {
 				energy: {
@@ -36,10 +46,13 @@ window.life.Breed = function(
 		_options,
 		_breed_conf
 	);
+	
+	var _creatures;
 
 	// constructor
 
 	function init(x, y) {
+		_.i = _i;
 		_.start_x = x;
 		_.start_y = y;
 
@@ -53,9 +66,9 @@ window.life.Breed = function(
 
 	function _createCreatures() {
 		var i;
-		_.creatures = {};
+		_creatures = {};
 		for (i = 1; i <= _.pop; i++) {
-			_.creatures[i] = _controller.newCreature(i);
+			_creatures[i] = _controller.newCreature(i);
 		}
 	}
 
@@ -63,7 +76,7 @@ window.life.Breed = function(
 		var x, y, cell;
 		var self = this;
 		var j = 0;
-		foreach(_.creatures, function(creature, i) {
+		foreach(_creatures, function(creature, i) {
 			cell = _controller.board().cell(_.start_x, _.start_y);
 			if (null === cell) return;
 			creature.init(self, cell, _.ai_class);
@@ -77,15 +90,15 @@ window.life.Breed = function(
 	}
 
 	function creatures() {
-		return _.creatures;
+		return _creatures;
 	}
 
 	function creature(i) {
-		return _.creatures[i];
+		return _creatures[i];
 	}
 
 	function killCreature(i) {
-		delete _.creatures[i];
+		delete _creatures[i];
 	}
 
 	function color() {
@@ -93,7 +106,7 @@ window.life.Breed = function(
 	}
 
 	function tick(tick) {
-		foreach(_.creatures, function(creature) {
+		foreach(_creatures, function(creature) {
 			creature.tick(tick);
 		});
 	}
