@@ -41,11 +41,11 @@ window.life.Creature = function(
 
 	// constructor
 
-	function init(breed, cell, ai_class) {
+	function init(breed, cell, dna, ai_class) {
 		_breed                = breed;
 		_cell                 = cell;
 
-		_.dna                  = inherit(_.dna, _breed.copyDna());
+		_.dna                  = dna;
 		_.state.alive          = true;
 		_.state.energy.current = _.dna.energy.default;
 
@@ -64,16 +64,16 @@ window.life.Creature = function(
 		}
 	}
 
-	function _considerMoving() {
-		if (_cell.currentFood() < 10) {
-			var dx = rand(-1, 1);
-			var dy = rand(-1, 1);
-			var cell_xy = _cell.xy();
-			if (_controller.board().hasCell(cell_xy.x+dx, cell_xy.y+dy)) {
-				_cell = _controller.board().cell(cell_xy.x+dx, cell_xy.y+dy);
-			}
-		}
-	}
+//	function _considerMoving() {
+//		if (_cell.currentFood() < 10) {
+//			var dx = rand(-1, 1);
+//			var dy = rand(-1, 1);
+//			var cell_xy = _cell.xy();
+//			if (_controller.board().hasCell(cell_xy.x+dx, cell_xy.y+dy)) {
+//				_cell = _controller.board().cell(cell_xy.x+dx, cell_xy.y+dy);
+//			}
+//		}
+//	}
 
 	// public methods
 

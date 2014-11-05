@@ -42,7 +42,7 @@ window.life.Cell = function(
 		_.i = i;
 		_.food.current = parseInt(_initFood.call(this));
 
-		_controller.event(this, 'cell.inited');
+		_controller.event(_intf, 'cell.inited');
 	}
 
 	// private methods
@@ -50,7 +50,7 @@ window.life.Cell = function(
 	function _initFood() {
 		var food;
 		var self = this;
-		var neighbours = this.neighbours(_.x, _.y);
+		var neighbours = getNeighbours(1)
 		var total_food = 0;
 		var count = 0;
 
@@ -86,22 +86,26 @@ window.life.Cell = function(
 	function tick(tick) {
 	}
 
-	function neighbours(x, y, radius) {
-		var dx, dy, x1, y1;
-		var board = _controller.board();
-		var cells = [];
-		radius = radius || 1;
-		for (dx = -radius; dx <= radius; dx++) {
-			for (dy = -radius; dy <= radius; dy++) {
-				x1 = x + dx;
-				y1 = y + dy;
-				if (x === x1 && y === y1) continue;
-				if (!board.hasCell(x1, y1)) continue;
-				cells.push(board.cell(x1, y1));
-			}
-		}
-		return cells;
+	function getNeighbours(radius) {
+		return _controller.board().getCellNeighbours(_intf, radius);
 	}
+
+//	function neighbours(x, y, radius) {
+//		var dx, dy, x1, y1;
+//		var board = _controller.board();
+//		var cells = [];
+//		radius = radius || 1;
+//		for (dx = -radius; dx <= radius; dx++) {
+//			for (dy = -radius; dy <= radius; dy++) {
+//				x1 = x + dx;
+//				y1 = y + dy;
+//				if (x === x1 && y === y1) continue;
+//				if (!board.hasCell(x1, y1)) continue;
+//				cells.push(board.cell(x1, y1));
+//			}
+//		}
+//		return cells;
+//	}
 
 	function currentFood() {
 		return _.food.current;
@@ -125,16 +129,19 @@ window.life.Cell = function(
 
 	// interface
 
-	return {
+	var _intf = {
 		init        : init,
 		tick        : tick,
 		xy          : xy,
 		gen         : gen,
-		neighbours  : neighbours,
+//		neighbours  : neighbours,
 		provideFood : provideFood,
 		currentFood : currentFood,
 		maxFood     : maxFood,
-		toString    : toString
+		toString    : toString,
+		getNeighbours: getNeighbours
 	};
+
+	return _intf;
 
 };

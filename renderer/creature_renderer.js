@@ -31,10 +31,10 @@ window.life.CreatureRenderer = function(
 		var r2     = creature.sightRange() * 3 * props.radius;
 		var ctx    = _canvas.context();
 
-		ctx.beginPath();
-		ctx.arc(x, y, r2, 0, 2*Math.PI);
-		ctx.strokeStyle = '#999';
-		ctx.stroke();
+//		ctx.beginPath();
+//		ctx.arc(x, y, r2, 0, 2*Math.PI);
+//		ctx.strokeStyle = '#999';
+//		ctx.stroke();
 
 		ctx.beginPath();
 		ctx.arc(x, y, r-1, 0, 2*Math.PI);

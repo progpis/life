@@ -79,7 +79,7 @@ window.life.Breed = function(
 		foreach(_creatures, function(creature, i) {
 			cell = _controller.board().cell(_.start_x, _.start_y);
 			if (null === cell) return;
-			creature.init(self, cell, _.ai_class);
+			creature.init(self, cell, inherit(_.dna), _.ai_class);
 		});
 	}
 
