@@ -12,16 +12,20 @@ window.life.board = function(controller) {
 		_root.init();
 		_cells.push(_root);
 
-		var cell = new life.cell(controller);
-		cell.init();
-		cell.setParent(_root);
-		_cells.push(cell);
+		var cell1 = new life.cell(controller);
+		cell1.init();
+		cell1.setParent(_root);
+		_root.addChild(cell1);
+		_cells.push(cell1);
 
-		var cell = new life.cell(controller);
-		cell.init();
-		cell.setParent(_root);
-		_cells.push(cell);
+		var cell2 = new life.cell(controller);
+		cell2.init();
+		cell2.setParent(_root);
+		_root.addChild(cell2);
+		_cells.push(cell2);
 
+		cell1.addSibling(cell2);
+		cell2.addSibling(cell1);
 	}
 
 	function _tick(tick) {

@@ -4,6 +4,7 @@ window.life.cell = function(controller) {
 	var _id = controller.getNextCellId();
 	var _parent;
 	var _children = [];
+	var _siblings = [];
 
 	function _init() {
 
@@ -19,7 +20,6 @@ window.life.cell = function(controller) {
 
 	function _setParent(parent) {
 		_parent = parent;
-		parent.addChild(cell);
 	}
 
 	function _getParent() {
@@ -34,6 +34,14 @@ window.life.cell = function(controller) {
 		return _children;
 	}
 
+	function _addSibling(sibling) {
+		_siblings.push(sibling);
+	}
+
+	function _getSiblings() {
+		return _siblings;
+	}
+
 	cell.init          = _init;
 	cell.tick          = _tick;
 	cell.getId         = _getId;
@@ -42,6 +50,8 @@ window.life.cell = function(controller) {
 	cell.getParent     = _getParent;
 	cell.addChild      = _addChild;
 	cell.getChildren   = _getChildren;
+	cell.addSibling    = _addSibling;
+	cell.getSiblings   = _getSiblings;
 
 	cell.hasNeighbour  = function(cell) {};
 	cell.getNeighbours = function() {};

@@ -13,7 +13,7 @@ window.life.controller = function() {
 		_registry.cellId = 0;
 
 		_ticker.init();
-		_board.init();
+		_board.init(5);
 		_fauna.init();
 		_renderer.init('canvas', _board, _fauna);
 
