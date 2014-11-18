@@ -47,7 +47,7 @@ window.life.renderer = function(controller) {
 		_drawBoardGuides();
 
 		var root = _board.getRootCell();
-		_renderCells(_canvas.center.x, _canvas.center.y, _board.getRootCell());
+		_renderCells(_canvas.center.x, _canvas.center.y);
 	}
 
 	function _getWalk() {
@@ -61,18 +61,29 @@ window.life.renderer = function(controller) {
 		];
 	}
 
-	function _renderCells(x, y, cell) {
+	function _renderCells(x, y) {
+
+
+
+
+
+
+		rec = rec || 0;
 		_renderCell(x, y, cell);
 		var children = cell.getChildren();
+
+		console.log(rec, cell.getId(), children.length);
+
 		var walk = _getWalk();
 		var i;
 		for (i=0; i<children.length; i++) {
-			_renderCells(x + walk[i].x, y + walk[i].y, children[i]);
+			_renderCells(x + walk[i].x, y + walk[i].y, children[i], rec + 1);
 		}
 	}
 
 	function _renderCell(x, y, cell) {
 		_drawHex(x, y, _canvas.cell.r, _canvas.cell.q);
+		_drawText(x, y, cell.getId());
 	}
 
 	function _drawBoardGuides(n) {
@@ -115,6 +126,11 @@ window.life.renderer = function(controller) {
 		_canvas.ctx.lineTo(Math.floor(x2)+0.5, Math.floor(y2)+0.5);
 		_canvas.ctx.strokeStyle = color || '#000';
 		_canvas.ctx.stroke();
+	}
+
+	function _drawText(x, y, s) {
+		_canvas.ctx.font = "10px Arial";
+		_canvas.ctx.fillText(s, x, y);
 	}
 
 	//

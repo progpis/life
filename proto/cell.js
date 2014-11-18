@@ -1,61 +1,50 @@
 window.life.cell = function(controller) {
 	var cell = this;
 
-	var _id = controller.getNextCellId();
-	var _parent;
-	var _children = [];
-	var _siblings = [];
+	var _id         = controller.getNextCellId();
+	var _generation = null;
+	var _siblings   = [];
 
-	function _init() {
+	//
 
-	}
+	cell.init = function(generation) {
+		_generation = generation || 0;
+	};
 
-	function _tick(tick) {
+	cell.tick = function(tick) {
 
-	}
+	};
 
-	function _getId() {
+	cell.getId = function() {
 		return _id;
-	}
+	};
 
-	function _setParent(parent) {
-		_parent = parent;
-	}
+	cell.getGeneration = function() {
+		return _generation;
+	};
 
-	function _getParent() {
-		return _parent;
-	}
-
-	function _addChild(child) {
-		_children.push(child);
-	}
-
-	function _getChildren() {
-		return _children;
-	}
-
-	function _addSibling(sibling) {
+	cell.addSibling = function(sibling) {
 		_siblings.push(sibling);
-	}
+	};
 
-	function _getSiblings() {
+	cell.getSiblings = function() {
 		return _siblings;
-	}
+	};
 
-	cell.init          = _init;
-	cell.tick          = _tick;
-	cell.getId         = _getId;
+	cell.hasNeighbour  = function(cell) {
 
-	cell.setParent     = _setParent;
-	cell.getParent     = _getParent;
-	cell.addChild      = _addChild;
-	cell.getChildren   = _getChildren;
-	cell.addSibling    = _addSibling;
-	cell.getSiblings   = _getSiblings;
+	};
 
-	cell.hasNeighbour  = function(cell) {};
-	cell.getNeighbours = function() {};
-	cell.getFood       = function() {};
-	cell.provideFood   = function(amount) {};
+	cell.getNeighbours = function() {
+
+	};
+
+	cell.getFood       = function() {
+
+	};
+
+	cell.provideFood   = function(amount) {
+
+	};
 
 };

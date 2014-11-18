@@ -2,8 +2,8 @@ window.life.ticker = function(controller) {
 	var ticker = this;
 
 	var _interval = 1000;
-	var _tick = 0;
-	var _timer;
+	var _tick     = 0;
+	var _timer    = null;
 
 	function _init(interval) {
 		_interval = interval || _interval;
